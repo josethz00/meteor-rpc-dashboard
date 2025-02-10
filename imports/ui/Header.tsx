@@ -1,7 +1,7 @@
 import { Random } from 'meteor/random';
 import React, { Fragment } from 'react';
 import { rpcApiClient } from '/imports/ui/services/rpc-api-client';
-import { ILogTypeEnum } from '../api/logs';
+import { ILogTypeEnum } from '/imports/api/logs';
 
 const logTypes = [
   { type: ILogTypeEnum.UserAction, label: 'User Action', color: 'bg-blue-500' },
@@ -11,7 +11,7 @@ const logTypes = [
   { type: ILogTypeEnum.Warning, label: 'Warning', color: 'bg-yellow-500' },
 ];
 
-export const Hello = () => {
+export const Header = () => {
   const userId = Random.id();
 
   const handleClick = async (logType: ILogTypeEnum) => {

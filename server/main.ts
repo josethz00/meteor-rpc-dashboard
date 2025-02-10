@@ -5,6 +5,7 @@ import { Random } from 'meteor/random';
 import { createModule } from 'meteor-rpc';
 import { z } from 'zod';
 
+
 const logColorMap: Record<ILogTypeEnum, string> = {
   [ILogTypeEnum.UserAction]: '#3B82F6',
   [ILogTypeEnum.UserLogin]: '#10B981',
@@ -12,7 +13,6 @@ const logColorMap: Record<ILogTypeEnum, string> = {
   [ILogTypeEnum.Error]: '#EF4444',
   [ILogTypeEnum.Warning]: '#FACC15',
 };
-
 
 const generateRandomMetadata = () => ({
   userId: Random.id(),
@@ -34,7 +34,10 @@ const logsModule = createModule('logs')
   .addPublication(
     'logsHistory',
     z.void(),
-    () => LogsCollection.find({})
+    () => {
+      const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
+      return LogsCollection.find({ timestamp: { $gte: tenMinutesAgo } })
+    }
   )
   .addMethod(
     'registerLog',

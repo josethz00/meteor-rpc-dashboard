@@ -60,7 +60,7 @@ export const Info = () => {
       backgroundColor: "transparent",
     },
     title: {
-      text: "Log Time Series",
+      text: "Log Time Series (Last 10 minutes)",
       style: { fontSize: "16px", fontWeight: "bold" },
     },
     xAxis: {
