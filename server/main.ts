@@ -1,34 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { ILog, ILogTypeEnum, LogsCollection } from '/imports/api/logs';
 import { CronJob } from 'cron';
-import { Random } from 'meteor/random';
 import { createModule } from 'meteor-rpc';
 import { z } from 'zod';
+import { insertRandomLog } from '/imports/api/utils/insert-random-log';
+import { logColorMap } from '/imports/api/utils/log-color-map';
 
-
-const logColorMap: Record<ILogTypeEnum, string> = {
-  [ILogTypeEnum.UserAction]: '#3B82F6',
-  [ILogTypeEnum.UserLogin]: '#10B981',
-  [ILogTypeEnum.ApiCall]: '#6B7280',
-  [ILogTypeEnum.Error]: '#EF4444',
-  [ILogTypeEnum.Warning]: '#FACC15',
-};
-
-const generateRandomMetadata = () => ({
-  userId: Random.id(),
-  ip: `${Array.from({ length: 4 }, () => Math.floor(Random.fraction() * 255)).join('.')}`,
-  browser: Random.choice(['Chrome', 'Firefox', 'Safari', 'Edge'])!,
-});
-
-const insertRandomLog = async () => {
-  const type = Random.choice(Object.values(ILogTypeEnum))!;
-  await LogsCollection.insertAsync({
-    type,
-    message: `Random log message ${Random.id()}`,
-    timestamp: new Date(),
-    metadata: { ...generateRandomMetadata(), color: logColorMap[type] ?? '#000' },
-  });
-};
 
 const logsModule = createModule('logs')
   .addPublication(
@@ -56,7 +33,7 @@ const logsModule = createModule('logs')
       return log;
     }
   )
-  .addMethod('getLogCountByStatus', z.void(), async () => { 
+  .addMethod('getLogCountByStatus', z.void(), async () => {
     return LogsCollection
       .rawCollection()
       .aggregate([

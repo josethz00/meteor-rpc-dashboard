@@ -1,7 +1,7 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Header } from './Header';
-import { Info } from './Info';
+import { Header } from './components/Header';
+import { Info } from './components/Info';
 
 const queryClient = new QueryClient();
 
