@@ -6,10 +6,8 @@ import { Info } from './components/Info';
 const queryClient = new QueryClient();
 
 export const App = () => (
-  <div>
-    <QueryClientProvider client={queryClient}>
-      <Header />
-      <Info />
-    </QueryClientProvider> 
-  </div>
+  <QueryClientProvider client={queryClient}>
+    <Header />
+    <Info />
+  </QueryClientProvider>
 );
